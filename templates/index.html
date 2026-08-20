@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fashion Designer</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════ PARTICLES BACKGROUND ═══════════════════════ -->
+<div id="particles-bg"></div>
+<div class="mesh-gradient"></div>
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+<nav class="navbar glass">
+  <div class="nav-brand">
+    <div class="brand-icon">✦</div>
+    <span class="brand-name">FashionAI</span>
+  </div>
+  <div class="nav-links">
+    <a href="#generator" class="nav-link active">Design Studio</a>
+    <a href="#gallery" class="nav-link">Gallery</a>
+    <a href="#about" class="nav-link">About</a>
+  </div>
+  <div class="nav-actions">
+    <div class="api-status-badge" id="api-status-badge">
+      <span class="status-dot"></span>
+      <span class="status-text">Checking...</span>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+      <span class="theme-icon">◐</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Design Your <br/>
+      <span class="gradient-text">Dream Fashion</span><br/>
+      with AI
+    </h1>
+    <p class="hero-subtitle">
+      Transform your fashion ideas into stunning designs instantly.<br/>
+      No artistic skills required — just describe your vision.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">15+</span>
+        <span class="stat-label">Style Categories</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">8</span>
+        <span class="stat-label">Color Palettes</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Design Possibilities</span>
+      </div>
+    </div>
+    <a href="#generator" class="cta-btn btn-primary">
+      Start Designing <span class="btn-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-visual">
+    <div class="mannequin-container">
+      <div class="mannequin-3d" id="mannequin">
+        <div class="mannequin-glow"></div>
+        <svg class="mannequin-svg" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Head -->
+          <ellipse cx="100" cy="42" rx="28" ry="32" class="mannequin-skin"/>
+          <!-- Neck -->
+          <rect x="91" y="70" width="18" height="20" rx="4" class="mannequin-skin"/>
+          <!-- Torso -->
+          <path d="M55 90 Q48 100 46 130 L48 200 Q50 210 100 212 Q150 210 152 200 L154 130 Q152 100 145 90 Q125 82 100 80 Q75 82 55 90Z" class="mannequin-body"/>
+          <!-- Left Arm -->
+          <path d="M55 95 Q30 110 22 145 Q18 170 24 185 Q28 188 34 185 Q40 165 42 148 L55 120Z" class="mannequin-body"/>
+          <!-- Right Arm -->
+          <path d="M145 95 Q170 110 178 145 Q182 170 176 185 Q172 188 166 185 Q160 165 158 148 L145 120Z" class="mannequin-body"/>
+          <!-- Left Hand -->
+          <ellipse cx="29" cy="193" rx="8" ry="10" class="mannequin-skin"/>
+          <!-- Right Hand -->
+          <ellipse cx="171" cy="193" rx="8" ry="10" class="mannequin-skin"/>
+          <!-- Skirt / Lower Body -->
+          <path d="M48 200 Q60 240 55 310 L90 315 L100 220 L110 315 L145 310 Q140 240 152 200 Q126 212 100 212 Q74 212 48 200Z" class="mannequin-lower"/>
+          <!-- Feet -->
+          <ellipse cx="72" cy="318" rx="12" ry="8" class="mannequin-skin"/>
+          <ellipse cx="128" cy="318" rx="12" ry="8" class="mannequin-skin"/>
+        </svg>
+        <div class="floating-tags">
+          <div class="float-tag t1 glass-sm">✨ Trendy</div>
+          <div class="float-tag t2 glass-sm">🎨 Unique</div>
+          <div class="float-tag t3 glass-sm">♻ Eco</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ GENERATOR ═══════════════════════ -->
+<section class="generator-section" id="generator">
+  <div class="section-header">
+    <h2 class="section-title">Design Studio</h2>
+    <p class="section-subtitle">Describe your perfect outfit and let AI bring it to life</p>
+  </div>
+
+  <div class="studio-grid">
+    <!-- LEFT: Controls -->
+    <div class="studio-controls glass-card">
+      <div class="control-section">
+        <label class="control-label">✍️ Describe Your Design</label>
+        <div class="prompt-wrapper">
+          <textarea
+            id="design-prompt"
+            class="prompt-input"
+            placeholder="e.g. A chic summer outfit with floral patterns, perfect for a rooftop brunch. I want something feminine yet modern with a pop of color..."
+            rows="4"
+          ></textarea>
+          <div class="prompt-suggestions">
+            <span class="suggestion-label">Quick Ideas:</span>
+            <button class="suggestion-chip" onclick="setPrompt('Cozy autumn street style with warm tones and layered textures')">🍂 Autumn</button>
+            <button class="suggestion-chip" onclick="setPrompt('Minimalist monochrome power suit for job interview')">💼 Power Suit</button>
+            <button class="suggestion-chip" onclick="setPrompt('Festival boho chic with fringe details and earthy colors')">🌸 Boho</button>
+            <button class="suggestion-chip" onclick="setPrompt('Y2K inspired colorful mini dress with platform shoes')">💫 Y2K</button>
+            <button class="suggestion-chip" onclick="setPrompt('Smart casual everyday look for college campus with sneakers')">🎓 Campus</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <label class="control-label">🎨 Style</label>
+          <div class="custom-select-wrapper">
+            <select id="style-select" class="custom-select">
+              {% for style in styles %}
+              <option value="{{ style }}">{{ style }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">👤 For</label>
+          <div class="custom-select-wrapper">
+            <select id="gender-select" class="custom-select">
+              <option value="Women">Women</option>
+              <option value="Men">Men</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Any">Any / Unisex</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <label class="control-label">🌈 Color Palette</label>
+          <div class="custom-select-wrapper">
+            <select id="palette-select" class="custom-select">
+              {% for palette in palettes %}
+              <option value="{{ palette }}">{{ palette }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">📅 Occasion</label>
+          <div class="custom-select-wrapper">
+            <select id="occasion-select" class="custom-select">
+              <option>Everyday</option>
+              <option>Work/Office</option>
+              <option>Date Night</option>
+              <option>Party/Club</option>
+              <option>Festival</option>
+              <option>Wedding Guest</option>
+              <option>Campus</option>
+              <option>Sports/Active</option>
+              <option>Beach/Resort</option>
+              <option>Formal Event</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palette Visualizer -->
+      <div class="control-section">
+        <label class="control-label">🎭 Palette Preview</label>
+        <div class="palette-preview" id="palette-preview"></div>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <label class="control-label">💰 Budget Level</label>
+          <div class="budget-toggle">
+            <button class="budget-btn active" data-budget="low">Budget</button>
+            <button class="budget-btn" data-budget="mid">Mid-range</button>
+            <button class="budget-btn" data-budget="high">Premium</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="generate-btn" id="generate-btn" onclick="generateDesign()">
+        <span class="btn-icon">✦</span>
+        <span class="btn-text">Generate Design</span>
+        <div class="btn-shimmer"></div>
+      </button>
+    </div>
+
+    <!-- RIGHT: Output -->
+    <div class="studio-output" id="studio-output">
+      <!-- Empty state -->
+      <div class="empty-state glass-card" id="empty-state">
+        <div class="empty-icon">✦</div>
+        <h3>Your Design Awaits</h3>
+        <p>Fill in your preferences and hit Generate to create your unique fashion design.</p>
+        <div class="empty-features">
+          <div class="ef-item">🎨 Detailed garment descriptions</div>
+          <div class="ef-item">🛍️ Affordable product matches</div>
+          <div class="ef-item">💡 Personalized styling tips</div>
+          <div class="ef-item">📊 Season & occasion guide</div>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div class="loading-state glass-card" id="loading-state" style="display:none">
+        <div class="loader-visual">
+          <div class="loader-ring r1"></div>
+          <div class="loader-ring r2"></div>
+          <div class="loader-ring r3"></div>
+          <div class="loader-center">✦</div>
+        </div>
+        <h3>Creating Your Design</h3>
+        <p id="loading-text">Consulting with Gemini AI...</p>
+        <div class="loading-steps">
+          <div class="load-step active" id="ls1">Analyzing your prompt</div>
+          <div class="load-step" id="ls2">Designing garments</div>
+          <div class="load-step" id="ls3">Selecting accessories</div>
+          <div class="load-step" id="ls4">Finalizing style tips</div>
+        </div>
+      </div>
+
+      <!-- Design result -->
+      <div id="design-result" style="display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ GALLERY ═══════════════════════ -->
+<section class="gallery-section" id="gallery">
+  <div class="section-header">
+    <h2 class="section-title">Design Gallery</h2>
+    <p class="section-subtitle">Your saved designs — build your personal lookbook</p>
+  </div>
+  <div class="gallery-grid" id="gallery-grid">
+    <div class="gallery-empty glass-card">
+      <div class="gallery-empty-icon">🖼️</div>
+      <p>No saved designs yet. Generate your first design above!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ABOUT ═══════════════════════ -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-text glass-card">
+      <h2>Make Fashion Accessible</h2>
+      <p>FashionAI removes the barriers between your creative vision and stunning fashion designs. No art degree, no expensive software — just your imagination and the power of Google's Gemini AI.</p>
+      <div class="about-features">
+        <div class="about-feat"><span class="feat-icon">🤖</span><div><strong>Google Gemini AI</strong><p>State-of-the-art language model creates detailed, realistic fashion designs</p></div></div>
+        <div class="about-feat"><span class="feat-icon">🛍️</span><div><strong>Smart Shopping</strong><p>Instantly matched to affordable products from popular online stores</p></div></div>
+        <div class="about-feat"><span class="feat-icon">🎓</span><div><strong>Student Friendly</strong><p>Designed for students — budget-conscious, accessible, and educational</p></div></div>
+        <div class="about-feat"><span class="feat-icon">🌙</span><div><strong>Modern Interface</strong><p>Beautiful 3D glassmorphism UI with dark and light mode</p></div></div>
+      </div>
+    </div>
+    <div class="about-faq glass-card">
+      <h2>FashionAI FAQs</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>What can FashionAI create?</summary>
+          <p>FashionAI turns your outfit ideas into detailed fashion concepts with garment descriptions, styling tips, color guidance, and occasion suggestions.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How should I describe my design?</summary>
+          <p>Include the style, colors, occasion, season, fit, and mood you want. The more specific your prompt, the more tailored the result.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need an API key?</summary>
+          <p>A configured API key is required for live AI generations. The app can still run in demo mode with sample designs.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Are the product matches available for purchase?</summary>
+          <p>Product matches are suggestions from popular online stores. Check each retailer for current prices, availability, and shipping details.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I save designs for later?</summary>
+          <p>Yes. Use the save action on a generated design to keep it in your local gallery in this browser.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <span class="brand-icon">✦</span>
+      <span>FashionAI</span>
+    </div>
+    <p class="footer-text">Built for Students · Free & Open Source</p>
+    <div class="footer-links">
+      <a href="https://aistudio.google.com" target="_blank">Google AI Studio</a>
+      <span>·</span>
+      <a href="https://ai.google.dev" target="_blank">Gemini API Docs</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ DESIGN CARD TEMPLATE ═══════════════════════ -->
+<template id="design-card-template">
+  <div class="design-card glass-card">
+    <div class="design-header">
+      <div class="design-meta">
+        <h2 class="design-name"></h2>
+        <div class="design-badges"></div>
+      </div>
+      <div class="design-actions-top">
+        <button class="action-btn save-btn" onclick="saveToGallery()" title="Save to Gallery">🔖</button>
+        <button class="action-btn share-btn" onclick="shareDesign()" title="Copy Summary">📋</button>
+      </div>
+    </div>
+
+    <p class="design-description"></p>
+
+    <!-- Color Story -->
+    <div class="color-story-bar">
+      <span class="cs-label">Color Story:</span>
+      <span class="cs-text"></span>
+    </div>
+
+    <!-- Info Pills -->
+    <div class="design-info-row">
+      <div class="info-pill season-pill"><span>📅</span><span class="pill-val season-val"></span></div>
+      <div class="info-pill price-pill"><span>💰</span><span class="pill-val price-val"></span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="design-tabs">
+      <button class="tab-btn active" data-tab="garments">👗 Garments</button>
+      <button class="tab-btn" data-tab="accessories">✨ Accessories</button>
+      <button class="tab-btn" data-tab="styling">💡 Styling Tips</button>
+      <button class="tab-btn" data-tab="products">🛍️ Shop It</button>
+      <button class="tab-btn" data-tab="advice">🌟 Style Advice</button>
+    </div>
+
+    <!-- Tab: Garments -->
+    <div class="tab-content active" id="tab-garments">
+      <div class="garments-list"></div>
+    </div>
+
+    <!-- Tab: Accessories -->
+    <div class="tab-content" id="tab-accessories">
+      <div class="accessories-grid"></div>
+    </div>
+
+    <!-- Tab: Styling -->
+    <div class="tab-content" id="tab-styling">
+      <div class="tips-list"></div>
+    </div>
+
+    <!-- Tab: Products -->
+    <div class="tab-content" id="tab-products">
+      <div class="products-loading" style="display:none">
+        <div class="mini-loader"></div>
+        <p>Finding the best affordable matches...</p>
+      </div>
+      <div class="products-grid"></div>
+    </div>
+
+    <!-- Tab: Advice -->
+    <div class="tab-content" id="tab-advice">
+      <div class="advice-loading" style="display:none">
+        <div class="mini-loader"></div>
+        <p>Generating personalized advice...</p>
+      </div>
+      <div class="advice-content"></div>
+    </div>
+
+    <!-- Tags -->
+    <div class="design-tags"></div>
+  </div>
+</template>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
