@@ -1,6 +1,6 @@
 # ✦ AI Fashion Design Generator
 
-> **Transform your fashion ideas into stunning designs using Google Gemini AI**  
+> **Transform your fashion ideas into stunning designs using  AI**  
 > Student-friendly · Free API · Dark & Light 3D UI · Affordable Product Matches
 
 ---
@@ -12,8 +12,8 @@
 pip install -r requirements.txt
 ```
 
-### 2. Get Your Free Gemini API Key
-1. Go to [aistudio.google.com](https://aistudio.google.com)
+### 2. Get Your Free Gemini,huggingface,API Key
+1. Go to [aistudio.google.com](https://aistudio.google.com,huggingface.co,https://openrouter.ai/)
 2. Sign in with your Google account
 3. Click **"Get API Key"** → Create API Key (free tier included!)
 
